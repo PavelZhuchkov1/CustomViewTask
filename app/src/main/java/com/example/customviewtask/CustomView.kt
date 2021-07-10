@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 
 class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
@@ -15,7 +16,6 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     }
 
     private val paint = Paint()
-    private var size = 500
     var scale = DEFAULT_SCALE
         set(scale) {
             if (scale <= DEFAULT_SCALE) {
@@ -40,7 +40,9 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
 
-        setMeasuredDimension((scale * size).toInt(),size)
+        val widthSize = MeasureSpec.getSize(widthMeasureSpec)
+        val heightSize = MeasureSpec.getSize(heightMeasureSpec)
+        setMeasuredDimension((scale * widthSize).toInt(), heightSize)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -48,8 +50,8 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         super.onDraw(canvas)
         paint.style = Paint.Style.FILL
         paint.color = Color.BLACK
-        val radius = size / 2f
-        canvas.drawCircle(size / 2f, size / 2f, radius, paint)
+        val radius = width / 2f
+        canvas.drawCircle(width / 2f, height / 2f, radius, paint)
 
     }
 
