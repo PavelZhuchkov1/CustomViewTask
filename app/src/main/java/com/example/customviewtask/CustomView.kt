@@ -40,9 +40,16 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
 
-        val widthSize = MeasureSpec.getSize(widthMeasureSpec)
+        var widthSize = MeasureSpec.getSize(widthMeasureSpec)
+        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
         val heightSize = MeasureSpec.getSize(heightMeasureSpec)
-        setMeasuredDimension((scale * widthSize).toInt(), heightSize)
+        val desiredWidth = (scale * widthSize).toInt()
+
+        if (widthMode == MeasureSpec.EXACTLY || widthMode == MeasureSpec.AT_MOST || widthMeasureSpec == MeasureSpec.UNSPECIFIED) {
+            widthSize = desiredWidth
+        }
+
+        setMeasuredDimension(widthSize, heightSize)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -50,7 +57,7 @@ class CustomView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         super.onDraw(canvas)
         paint.style = Paint.Style.FILL
         paint.color = Color.BLACK
-        val radius = width / 2f
+        val radius = measuredWidth / 2f
         canvas.drawCircle(width / 2f, height / 2f, radius, paint)
 
     }
